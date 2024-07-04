@@ -343,6 +343,34 @@ const emailAllRegisteredUsers = async (req, res) => {
     }
 };
 
+// funcion auxiliar
+const addAdminRoleToExistingUser = async (req, res) => {
+    const {userId} = req.body;
+  
+  
+    try {
+      // Verificar si el usuario existe
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(404).json({ userNotFound: `No se encontró un usuario` });
+      }
+  
+      // Verificar si el usuario ya es administrador
+      const isAdmin = await Admin.findOne({ where: { user_id: userId } });
+      if (isAdmin) {
+        return res.status(400).json({ alreadyAdmin: `El usuario ya es administrador` });
+      }
+  
+      // Añadir el rol de administrador al usuario
+      await Admin.create({ user_id: user.id });
+  
+      return res.status(201).json({ success: 'Rol de administrador añadido exitosamente' });
+    } catch (error) {
+      console.error('Error al añadir el rol de administrador:', error);
+      return res.status(500).json({ error: `Error interno del servidor: ${error}` });
+    }
+  };
+  
 module.exports = {
     disableUserById,
     disableUserByEmail,
@@ -352,6 +380,7 @@ module.exports = {
     activateUserByEmail,
     activateUserById,
     viewAllOrders,
+    addAdminRoleToExistingUser,
     emailAllRegisteredUsers
 };
 

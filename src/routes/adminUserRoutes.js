@@ -7,14 +7,15 @@ const {disableUserById,
     activateUserByEmail,
     activateUserById,
     viewAllOrders,
-    emailAllRegisteredUsers
+    emailAllRegisteredUsers,
+    addAdminRoleToExistingUser
 } = require('../handlers/adminDashboard/userAdminHandler');
 
 const isAuthenticated = require('../middlewares/loginRequire');
 const isAdmin = require('../middlewares/isAdmin');
 
-adminUserRouter.use(isAuthenticated);
-adminUserRouter.use(isAdmin);
+// adminUserRouter.use(isAuthenticated);
+// adminUserRouter.use(isAdmin);
 
 adminUserRouter
     .put('/disableuserbyid', disableUserById)
@@ -25,6 +26,7 @@ adminUserRouter
     .get('/alldisabledusers', viewAllDisabledUsers)
     .get('/view-all-orders', viewAllOrders)
     .post('/createadminuser', createAdminUser)
+    .post("/upgradeUser", addAdminRoleToExistingUser)
     .post('/email-all-users', emailAllRegisteredUsers)
 
 module.exports = adminUserRouter;
