@@ -35,7 +35,7 @@ const postReviewServices = async (userId, data) => {
         });
 
         if (existingReview) {
-            throw new Error(`El usuario ya ha dejado una opinión para esta plantilla`);
+            throw new Error(`El usuario ya ha dejado una opiniÃ³n para esta plantilla`);
         }
         const requiredFields = ['rating', 'content', 'idTemplate'];
         for (const field of requiredFields) {
